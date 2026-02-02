@@ -1,0 +1,39 @@
+name: Deploy to HuggingFace Space
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sem_line_enhancer/**"
+      - "app/**"
+      - "examples/**"
+      - ".github/workflows/cd.yaml"
+      - "README.md"
+      - "requirements.txt"
+      - "pyproject.toml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Sync to HF Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          git clone https://huggingface.co/spaces/alibaghizade/SEM-contrast-enhancement hf-space
+
+          cd hf-space
+          find . -mindepth 1 -not -path "./.git*" -exec rm -rf {} +
+          cd ..
+          find . -mindepth 1 -maxdepth 1 ! -name ".git" ! -name "hf-space" -exec cp -r {} hf-space/ \;
+
+          cd hf-space
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-deploy from GitHub: $GITHUB_SHA"
+          git push https://alibaghizade:$HF_TOKEN@huggingface.co/spaces/alibaghizade/SEM-contrast-enhancement main

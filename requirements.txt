@@ -1,0 +1,26 @@
+# --- Core Dependencies ---
+torch>=2.0.0
+torchvision
+numpy>=1.23.0
+opencv-python
+segment-anything
+pathlib
+pyyaml
+tqdm
+matplotlib
+
+# --- App & UI ---
+streamlit>=1.28.0
+plotly
+pandas
+
+# --- AI & Agents ---
+openai
+langchain
+langchain-openai
+python-dotenv
+
+# --- Development ---
+pytest
+black
+flake8

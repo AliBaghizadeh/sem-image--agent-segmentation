@@ -1,0 +1,38 @@
+﻿# --- Data & Weights ---
+data/
+*.tif
+*.tiff
+*.png
+*.jpg
+*.jpeg
+!examples/**/*.png
+!examples/**/*.jpg
+!app/static/**/*.png
+
+# --- Models & Runs ---
+models/sam_weights/*.pth
+finetuning/runs/
+**/__pycache__/
+*.pth
+*.h5
+*.onnx
+
+# --- Environment & OS ---
+.env
+venv/
+env/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Research Docs (Keep private until publication) ---
+manuscript/
+*.pdf
+publish/
+
+# --- Temporary Files ---
+tmp/
+temp/
+*.log
+.ipynb_checkpoints/

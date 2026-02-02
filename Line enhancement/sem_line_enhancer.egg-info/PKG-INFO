@@ -1,0 +1,20 @@
+Metadata-Version: 2.4
+Name: sem-line-enhancer
+Version: 0.1.0
+Summary: SEM line enhancement preprocessing toolkit
+Author-email: Ali <example@example.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: opencv-python
+Requires-Dist: tifffile
+Requires-Dist: scikit-image
+Requires-Dist: joblib
+Requires-Dist: mlflow
+Requires-Dist: matplotlib
+Requires-Dist: tqdm
+Requires-Dist: streamlit
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: ruff; extra == "dev"
+Requires-Dist: black; extra == "dev"

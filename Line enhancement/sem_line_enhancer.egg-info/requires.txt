@@ -1,0 +1,14 @@
+numpy
+opencv-python
+tifffile
+scikit-image
+joblib
+mlflow
+matplotlib
+tqdm
+streamlit
+
+[dev]
+pytest
+ruff
+black
