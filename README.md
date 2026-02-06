@@ -158,6 +158,21 @@ If quality is poor, the agent (in the **Streamlit app**):
 2. Displays suggested preprocessing parameters (Frangi scales, DoG sigma, Blend ratio) in the UI
 3. Directs the user to apply the "Rescue Workflow" with recommended settings
 
+### 5. **AI Consultant (RAG-Powered)**
+The Streamlit app includes an **interactive Q&A assistant** that helps users optimize their workflow:
+
+**How it works:**
+- **Knowledge Base**: Pre-indexed with relevant materials science papers (Frangi filtering, SAM architecture, microstructure analysis)
+- **Deployment Options**: 
+  - **Local LLM**: Run with Ollama (privacy-first, no API costs)
+  - **API-based**: Use OpenAI/Anthropic for faster responses
+- **Example Queries**:
+  - *"What Frangi scales work best for noisy SEM images?"*
+  - *"How does CLAHE affect grain boundary detection?"*
+  - *"Should I use higher blend values for low-contrast samples?"*
+
+The assistant retrieves relevant excerpts from the knowledge base and provides context-aware answers specific to SEM microstructure analysis.
+
 ---
 
 ### 📊 Analytical Results
