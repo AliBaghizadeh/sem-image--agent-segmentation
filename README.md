@@ -6,6 +6,8 @@
 
 > **Automated grain boundary detection in SEM images using fine-tuned [MatSAM](https://arxiv.org/abs/2401.05638) with intelligent failure diagnosis**
 
+![Example Segmentation](assets/example_segmentation.png)
+
 ---
 
 ## 🎯 Problem Statement
@@ -126,7 +128,11 @@ If quality is poor, the agent:
 
 ---
 
-## 📊 Results
+### 📊 Analytical Results
+
+The pipeline automatically generates publication-quality microstructural distributions:
+
+![Microstructural Analysis](assets/analysis_plots.png)
 
 | Metric | Before Fine-tuning | After Fine-tuning | Improvement |
 |--------|-------------------|-------------------|-------------|
