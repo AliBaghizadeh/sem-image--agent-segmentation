@@ -166,6 +166,7 @@ sem-agent-segmentation/
 
 ## 📄 Publications & References
 
+- **Core Article**: ["From 30 Minutes to 15 Seconds: Automating SEM Microstructure Segmentation with MatSAM"](https://medium.com/@alibaghizade/from-30-minutes-to-15-seconds-automating-sem-microstructure-segmentation-with-matsam-9839c02b6df1) (Medium)
 - **MatSAM Foundation**: ["A Novel Training-Free Approach to Efficiently Extracting Material Microstructures Via Visual Large Model"](https://doi.org/10.1016/j.mattod.2023.xxx)
 - **Preprocessing Methodology**: ["Multi-scale Pre-processing for SEM Micrographs of Line-like Features"](https://medium.com/@alibaghizade/multi-scale-pre-processing-for-sem-micrographs-of-line-like-features-88303fb25631) (Medium)
 
