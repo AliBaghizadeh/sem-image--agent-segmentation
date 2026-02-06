@@ -107,16 +107,16 @@ graph TD
 
     subgraph "Agentic Loop"
     B --> C{"Quality Check<br/>(Coverage & Grain Count)"}
-    
-    %% Success Path
     C -->|Pass| D[Extract Statistics]
-    
-    %% Failure Path
     C -->|Fail| E[Diagnostic Agent]
     E -->|Diagnose| F[LLM Consultant / RAG]
     F -->|Suggest| G[Rescue Workflow]
     G -->|Enhance| B
     end
+
+    %% Invisible alignment helper
+    B -.-> H
+    linkStyle 6 opacity:0
 
     subgraph "Output Phase"
     D --> H[Grain Size Distribution]
