@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B)](https://share.streamlit.io/alibaghizadeh/sem-image--agent-segmentation/main/app/app.py)
 
-> **Automated grain boundary detection in SEM images using fine-tuned SAM with intelligent failure diagnosis**
+> **Automated grain boundary detection in SEM images using fine-tuned [MatSAM](https://arxiv.org/abs/2401.05638) with intelligent failure diagnosis**
 
 ---
 
@@ -29,9 +29,9 @@ Traditional computer vision methods fail on SEM images due to:
 **SEM Agent Segmentation** combines state-of-the-art deep learning with intelligent automation:
 
 ### 🧠 Core Innovation
-1. **Fine-tuned Vision Transformer**: Adapted Meta's Segment Anything Model (SAM) specifically for materials science imaging
+1. **Fine-tuned Vision Transformer**: Adapted [MatSAM](https://arxiv.org/abs/2401.05638) specifically for materials science imaging
 2. **Multi-scale Enhancement Pipeline**: Frangi filters + Difference-of-Gaussians (DoG) to boost faint grain boundaries
-3. **Agentic AI Layer**: Autonomous diagnostic system that detects segmentation failures and automatically applies corrective preprocessing
+3. **Agentic AI Layer**: Autonomous diagnostic system that detects segmentation failures and suggests corrective parameters for the Rescue Workflow
 
 ### 🎨 What Makes It Unique
 - **Self-healing**: When segmentation quality is poor, the AI agent diagnoses the issue (e.g., "low contrast", "high noise") and applies targeted image enhancement
@@ -44,10 +44,10 @@ Traditional computer vision methods fail on SEM images due to:
 
 | Feature | Description |
 |---------|-------------|
-| 🎯 **Fine-tuned SAM** | Mask decoder trained on 1,500+ annotated SEM grain images |
-| 🛠️ **Rescue Workflow** | Automatic enhancement for failed segmentations (30% improvement) |
-| 📊 **Real-time Analytics** | Grain size distribution, coverage %, quality scores |
-| 🤖 **Diagnostic Agent** | Identifies failure modes and suggests optimal parameters |
+| 🎯 **Fine-tuned MatSAM** | Mask decoder trained on 1,500+ annotated SEM grain images |
+| 🛠️ **Rescue Workflow** | Targeted enhancement for failed segmentations (30% improvement) |
+| 📊 **Real-time Analytics** | Grain size distribution, morphology statistics, quality scores |
+| 🤖 **Diagnostic Agent** | Identifies failure modes and suggests optimal enhancement parameters |
 | 🔬 **Ask from AI** | RAG-based research advisor using your own PDF library |
 | ⚡ **GPU Accelerated** | CuPy + OpenCL for 5x faster preprocessing |
 
@@ -108,7 +108,7 @@ python finetuning/train_sam.py --train_data "data/images" --mask_data "data/mask
 - **Dirt Removal**: Morphological filtering to eliminate imaging artifacts
 
 ### 3. **Model Architecture**
-- **Base**: SAM ViT-L (Segment Anything Model, Large variant)
+- **Base**: [MatSAM](https://arxiv.org/abs/2401.05638) ViT-L (Segment Anything Model adapted for Materials)
 - **Fine-tuning**: Only the mask decoder is trained (encoder frozen)
 - **Loss**: Focal + Dice loss for handling class imbalance
 - **Training**: 50 epochs, AdamW optimizer, early stopping
@@ -121,8 +121,8 @@ The system analyzes segmentation quality using:
 
 If quality is poor, the agent:
 1. Diagnoses the failure type (e.g., "under-segmentation", "high noise")
-2. Suggests optimal preprocessing parameters
-3. Automatically applies the "rescue workflow"
+2. Suggests optimal preprocessing parameters (Frangi, DoG, Blend)
+3. Directs the user to the "Rescue Workflow" for recovery
 
 ---
 
@@ -167,7 +167,7 @@ sem-agent-segmentation/
 ## 📄 Publications & References
 
 - **Core Article**: ["From 30 Minutes to 15 Seconds: Automating SEM Microstructure Segmentation with MatSAM"](https://medium.com/@alibaghizade/from-30-minutes-to-15-seconds-automating-sem-microstructure-segmentation-with-matsam-9839c02b6df1) (Medium)
-- **MatSAM Foundation**: ["A Novel Training-Free Approach to Efficiently Extracting Material Microstructures Via Visual Large Model"](https://doi.org/10.1016/j.mattod.2023.xxx)
+- **MatSAM Foundation**: [C. Li, X. Han, C. Yao, and X. Ban, “MatSAM: Efficient Extraction of Microstructures of Materials via Visual Large Model,” arXiv preprint arXiv:2401.05638, 2024.](https://arxiv.org/abs/2401.05638)
 - **Preprocessing Methodology**: ["Multi-scale Pre-processing for SEM Micrographs of Line-like Features"](https://medium.com/@alibaghizade/multi-scale-pre-processing-for-sem-micrographs-of-line-like-features-88303fb25631) (Medium)
 
 ---
@@ -201,6 +201,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Meta AI for the Segment Anything Model
+- MatSAM authors for the innovative microstructural segmentation model
+- Meta AI for the original Segment Anything Model
 - Materials science community for open datasets
 - Streamlit for the amazing web framework
