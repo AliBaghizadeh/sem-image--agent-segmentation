@@ -114,9 +114,8 @@ graph TD
     G -->|Enhance| B
     end
 
-    %% Invisible vertical alignment helper (correct anchor)
-    D -.-> H
-    linkStyle 6 opacity:0
+    %% Force same vertical rank
+    G --- H
 
     subgraph "Output Phase"
     H[Grain Size Distribution]
@@ -124,7 +123,7 @@ graph TD
     I --> J[Publication Plots]
     end
 
-    %% Real connection
+    %% Real flow
     D --> H
     
     style E fill:#f9d5e5,stroke:#333,stroke-width:2px
