@@ -107,7 +107,7 @@ graph TD
     end
 
     subgraph "Agentic Loop"
-    B --> C{Quality Check<br/>(Coverage & Grain Count)}
+    B --> C{"Quality Check\n(Coverage & Grain Count)"}
     C -- "Pass (Good Quality)" --> D[Extract Statistics]
     C -- "Fail (Poor Result)" --> E[Diagnostic Agent]
     
