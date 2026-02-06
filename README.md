@@ -77,8 +77,18 @@ python preprocessing/remove_info_bar.py --input_dir "data/raw" --output_dir "dat
 python preprocessing/tile_images.py --input_dir "data/clean" --output_dir "data/tiled" \
     --tile_height 921 --tile_width 1024
 
-# 3. Fine-tune SAM on your dataset
-python finetuning/train_sam.py --train_data "data/tiled_images" --mask_data "data/tiled_masks" \
+# 3. Optimize parameters with Grid Search
+python gridsearch_single_image.py --name "sample_tile.tif" --output_dir "data/grid_search"
+
+# 4. Generate masks and overlays (Rescue Workflow)
+# Skips preprocessing by default - perfect for grid search results
+python apply_rescue.py --all --input_dir "data/grid_search/results" --output_dir "data/masks" --overlay
+
+# 5. Extract Publication-Ready Statistics & Plots
+python analyze_grains.py --mask_dir "data/masks" --output_csv "data/stats.csv" --pixel_size 0.5 --plot
+
+# 6. Fine-tune SAM on your dataset
+python finetuning/train_sam.py --train_data "data/images" --mask_data "data/masks" \
     --epochs 50 --batch_size 4 --augment
 ```
 
@@ -141,10 +151,14 @@ sem-agent-segmentation/
 │   └── train_sam.py             # SAM fine-tuning script
 ├── preprocessing/
 │   ├── remove_info_bar.py       # Crop metadata from raw images
-│   └── tile_images.py           # Split large images into patches
+│   ├── tile_images.py           # Split large images into patches
+│   └── auto_label.py            # Automated mask generation
 ├── Line enhancement/            # Multi-scale preprocessing engine
 │   └── sem_line_enhancer/       # Frangi, DoG, CLAHE modules
+├── analyze_grains.py            # Physical stats & distribution plots
+├── apply_rescue.py              # Targeted enhancement & mask recovery
 ├── gridsearch_single_image.py   # Parameter optimization tool
+├── evaluate_metrics.py          # AI performance (IoU, Dice, Precision)
 └── requirements.txt             # Core dependencies
 ```
 

@@ -37,14 +37,44 @@ st.set_page_config(
 # Custom CSS for professional look
 st.markdown("""
 <style>
+    /* Global font size enforcement */
+    html, body, [class*="st-"] {
+        font-size: 16px !important;
+    }
+
+    /* Enforce maximum content width for consistency */
+    [data-testid="stAppViewBlockContainer"] {
+        max-width: 1920px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
     .main-header {
-        font-size: 2.5rem;
-        font-weight: 700;
+        font-size: 3rem !important; /* Scaled up for 16px base */
+        font-weight: 800;
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
+
+    /* Ensure captions and small text are exactly 16px */
+    .stCaption, .stMarkdown caption, [data-testid="stCaptionContainer"] {
+        font-size: 1rem !important; 
+        color: #4a5568 !important;
+    }
+
+    /* Metric and Sidebar scaling */
+    [data-testid="stMetricValue"] {
+        font-size: 2rem !important;
+    }
+    [data-testid="stMetricLabel"] {
+        font-size: 1rem !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown p {
+        font-size: 1rem !important;
+    }
+
     .metric-card {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 1.5rem;
@@ -52,13 +82,128 @@ st.markdown("""
         color: white;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
+
+    /* UI Coherency: Standardized Height for single-line interactive elements */
+    .stButton>button, 
+    div[data-testid="stTextInput"] input {
+        height: 3.2rem !important;
+        line-height: 3.2rem !important;
+        min-height: 3.2rem !important;
+        max-height: 3.2rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    /* Selectbox requires more flexible height to avoid squashing */
+    div[data-testid="stSelectbox"] [data-baseweb="select"] {
+        min-height: 3.2rem !important;
+        border-radius: 8px !important;
+    }
+
+    /* Neutralize red borders on selection/focus with light blue */
+    div[data-baseweb="select"] > div {
+        border-color: rgba(0, 198, 255, 0.2) !important;
+    }
+
+    /* File Uploader requires more height to avoid text overlap */
+    [data-testid="stFileUploader"] section {
+        min-height: 5rem !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+    }
+
     .stButton>button {
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
-        padding: 0.5rem 2rem;
-        border-radius: 5px;
-        font-weight: 600;
+        border-radius: 8px;
+        font-weight: 400;
+        font-size: 1rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        width: auto !important;
+        white-space: nowrap !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Prevent sidebar buttons from overflowing */
+    [data-testid="stSidebar"] [data-testid="stBaseButton-secondary"],
+    [data-testid="stSidebar"] [data-testid="stBaseButton-primary"] {
+        width: 100% !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    /* Form field alignment */
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stSelectbox"] [data-baseweb="select"] {
+        border-radius: 8px !important;
+    }
+
+    [data-testid="stFileUploader"] section {
+        border-radius: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* Professional header scaling - Adjusted to not overshadow tabs */
+    h1 { font-size: 2.5rem !important; }
+    h2 { font-size: 2.0rem !important; }
+    h3 { font-size: 1.5rem !important; }
+    h4 { font-size: 1.1rem !important; }
+
+    /* Replace Red Warning/Error colors with Light Blue */
+    /* st.error override */
+    [data-testid="stNotification"][data-status="error"] {
+        background-color: #e1effe !important;
+        color: #1e429f !important;
+        border: 1px solid #a4cafe !important;
+    }
+    [data-testid="stNotification"][data-status="error"] svg {
+        fill: #1e429f !important;
+    }
+
+    /* st.warning override */
+    [data-testid="stNotification"][data-status="warning"] {
+        background-color: #edf2f7 !important;
+        color: #2b6cb0 !important;
+        border: 1px solid #bee3f8 !important;
+    }
+    
+    /* metric 'delta' red override */
+    [data-testid="stMetricDelta"] > div [data-testid="stIcon"] {
+        color: #00c6ff !important;
+    }
+    [data-testid="stMetricDelta"] > div {
+        color: #00c6ff !important;
+    }
+
+    /* Custom 'Poor' status override for metrics if manually colored */
+    .stMetric [data-testid="stMetricDelta"] svg {
+        fill: #00c6ff !important;
+    }
+
+    /* Style Streamlit Tabs - Aggressive selector for all versions */
+    [data-testid="stTabs"] button [data-testid="stMarkdownContainer"] p,
+    [data-testid="stTabs"] button p,
+    [data-testid="stTab"] p,
+    [data-testid="stTab"] {
+        font-size: 24px !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+    }
+
+    [data-testid="stTab"] {
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+    
+    /* Increase spacing between tab labels */
+    [data-testid="stTabs"] {
+        gap: 3rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -93,37 +238,34 @@ def load_model_ui():
         default_path = Path(__file__).parent.parent / "models/sam_weights/sam_vit_l_0b3195.pth"
         st.session_state.current_model_path = str(default_path) if default_path.exists() else ""
 
-    # "Browse" button logic
-    browse_col1, browse_col2 = st.columns([1, 2])
-    with browse_col1:
-        if st.button("📁 Browse Weights...", use_container_width=True):
-            # Initialize hidden tkinter window
-            try:
-                root = tk.Tk()
-                root.withdraw()
-                root.attributes('-topmost', True)  # Bring to front
-                
-                # Open dialog
-                selected_path = filedialog.askopenfilename(
-                    initialdir=str(Path(__file__).parent.parent),
-                    title="Select MatSAM Weights (.pth)",
-                    filetypes=(("Model Weights", "*.pth"), ("All files", "*.*"))
-                )
-                root.destroy()
-                
-                if selected_path:
-                    st.session_state.current_model_path = selected_path
-            except Exception as e:
-                st.error(f"File picker error: {e}. Please enter path manually.")
+    # Use vertical layout to prevent overlapping on zoom
+    if st.button("📁 Browse Weights..."):
+        # Initialize hidden tkinter window
+        try:
+            root = tk.Tk()
+            root.withdraw()
+            root.attributes('-topmost', True)  # Bring to front
+            
+            # Open dialog
+            selected_path = filedialog.askopenfilename(
+                initialdir=str(Path(__file__).parent.parent),
+                title="Select MatSAM Weights (.pth)",
+                filetypes=(("Model Weights", "*.pth"), ("All files", "*.*"))
+            )
+            root.destroy()
+            
+            if selected_path:
+                st.session_state.current_model_path = selected_path
+        except Exception as e:
+            st.error(f"File picker error: {e}. Please enter path manually.")
 
-    with browse_col2:
-        user_path = st.text_input(
-            "Current Weights Path",
-            value=st.session_state.current_model_path,
-            key="path_input",
-            label_visibility="collapsed"
-        )
-        st.session_state.current_model_path = user_path
+    user_path = st.text_input(
+        "Current Weights Path:",
+        value=st.session_state.current_model_path,
+        key="path_input",
+        help="Full path to the .pth weights file"
+    )
+    st.session_state.current_model_path = user_path
     
     # Reload logic (cached for efficiency)
     if user_path:
@@ -301,7 +443,7 @@ with st.sidebar:
     if "base_url" in st.session_state.consultant_config:
         consultant.base_url = st.session_state.consultant_config["base_url"]
     
-    if st.button("🔄 Reload Knowledge Base"):
+    if st.button("🔄 Reload Knowledge Base", use_container_width=True):
         with st.spinner("Indexing research papers..."):
             success, msg = consultant.initialize_rag()
             if success:
@@ -357,18 +499,64 @@ with tab1:
         st.info("ℹ️ Please upload an SEM image to begin.")
     
     if can_segment:
-        if st.button("🚀 Run Segmentation", use_container_width=True, type="primary"):
-            with st.spinner("Analyzing microstructure with SEM Agent..."):
+        if st.button("🚀 Run Segmentation", type="primary"):
+            progress_bar = st.progress(0, text="Initializing SEM Agent...")
+            
+            with st.container():
+                # 1. Preprocessing
+                progress_bar.progress(10, text="🧪 Phase 1/3: Multi-scale Enhancement...")
                 use_global = "Global" in st.session_state.seg_mode
-                results = process_image(
-                    st.session_state.uploaded_image, 
-                    st.session_state.model,
-                    enhance=st.session_state.do_enhance,
-                    use_global=use_global
-                )
+                
+                # We'll slightly refactor process_image logic into steps here for the progress bar
+                img_array = np.array(st.session_state.uploaded_image)
+                if len(img_array.shape) == 3:
+                    image_gray = cv2.cvtColor(img_array, cv2.COLOR_RGB2GRAY)
+                else:
+                    image_gray = img_array
+                
+                # Enhancement
+                input_rgb = cv2.cvtColor(image_gray, cv2.COLOR_GRAY2RGB)
+                proc_img = image_gray
+                if st.session_state.do_enhance and HAS_ENHANCER:
+                    try:
+                        preprocessor = SEMPreprocessor(**PREPROCESSOR_PRESETS["boundaries"])
+                        preset = PIPELINE_PRESETS["boundaries"].copy()
+                        preset["frangi_scales"] = [0.3, 0.7, 1.5]
+                        preset["clahe_clip"] = 10.0
+                        _, _, i_fused, _ = preprocessor.preprocess_dual(image_gray, **preset)
+                        input_gray = (i_fused * 255).clip(0, 255).astype(np.uint8)
+                        input_rgb = cv2.cvtColor(input_gray, cv2.COLOR_GRAY2RGB)
+                        proc_img = input_gray
+                    except: pass
+
+                # 2. SAM Inference
+                seg_msg = "🧠 Phase 2/3: SAM Vision Transformer (Robust Grid Mode)..." if not use_global else "🧠 Phase 2/3: SAM Vision Transformer (Global Pass)..."
+                progress_bar.progress(30, text=seg_msg)
+                
+                try:
+                    mask = st.session_state.model.segment(input_rgb, use_global=use_global)
+                    progress_bar.progress(85, text="📊 Phase 3/3: Diagnostic Agent Analysis...")
+                except Exception as e:
+                    st.error(f"Segmentation error: {e}")
+                    mask = np.zeros_like(image_gray, dtype=np.uint8)
+
+                # 3. Post-processing & Agent
+                agent = st.session_state.agent
+                metrics = agent.analyze_quality(mask)
+                
+                results = {
+                    'mask': mask,
+                    'metrics': metrics,
+                    'image_array': proc_img,
+                    'raw_gray': image_gray
+                }
+                
                 st.session_state.results = results
                 st.session_state.rescue_applied = False
-            st.success("✅ Segmentation complete!")
+                
+                progress_bar.progress(100, text="✅ Microstructure Analysis Complete!")
+                st.success("✅ Segmentation complete!")
+                # Remove progress bar after completion optionally, but here we keep it for a moment
 
     # ------------------- RESULTS DISPLAY -------------------
     if st.session_state.results:
@@ -381,15 +569,34 @@ with tab1:
             
             st.markdown("### Results")
             
-            # Metrics
-            metric_col1, metric_col2, metric_col3 = st.columns(3)
-            with metric_col1:
-                st.metric("Grain Count", f"{metrics['grain_count']}")
-            with metric_col2:
-                st.metric("Coverage", f"{metrics['coverage']:.1f}%")
-            with metric_col3:
-                quality_delta = "Good" if metrics['is_good'] else "Poor"
-                st.metric("Quality Score", f"{metrics['quality_score']:.2f}", delta=quality_delta)
+            # Dynamic Colors
+            res_color = "#28a745" if metrics['is_good'] else "#dc3545"
+            
+            # Custom Results Metrics
+            res_col1, res_col2, res_col3 = st.columns(3)
+            with res_col1:
+                st.markdown(f"""
+                <div style="text-align: center;">
+                    <p style="font-size: 18px; margin-bottom: 5px; color: #666;">Grain Count</p>
+                    <p style="font-size: 32px; font-weight: 800; color: {res_color}; margin: 0;">{metrics['grain_count']}</p>
+                </div>
+                """, unsafe_allow_html=True)
+            with res_col2:
+                st.markdown(f"""
+                <div style="text-align: center;">
+                    <p style="font-size: 18px; margin-bottom: 5px; color: #666;">Coverage</p>
+                    <p style="font-size: 32px; font-weight: 800; color: {res_color}; margin: 0;">{metrics['coverage']:.1f}%</p>
+                </div>
+                """, unsafe_allow_html=True)
+            with res_col3:
+                status_text = "Good" if metrics['is_good'] else "Poor"
+                st.markdown(f"""
+                <div style="text-align: center;">
+                    <p style="font-size: 18px; margin-bottom: 5px; color: #666;">Quality Score</p>
+                    <p style="font-size: 32px; font-weight: 800; color: {res_color}; margin: 0;">{metrics['quality_score']:.2f}</p>
+                    <p style="font-size: 14px; color: {res_color}; margin-top: -5px; font-weight: 600;">{status_text}</p>
+                </div>
+                """, unsafe_allow_html=True)
             
             # Visualization
             st.markdown("### Segmentation Mask")
@@ -406,8 +613,7 @@ with tab1:
                     label="📥 Binary Mask",
                     data=mask_bytes,
                     file_name=f"SEM_Agent_mask.png",
-                    mime="image/png",
-                    use_container_width=True
+                    mime="image/png"
                 )
                 
             with dl_col2:
@@ -416,8 +622,7 @@ with tab1:
                     label="🎨 Visual Overlay",
                     data=overlay_bytes,
                     file_name=f"SEM_Agent_overlay.png",
-                    mime="image/png",
-                    use_container_width=True
+                    mime="image/png"
                 )
             
             # ========== AGENTIC DIAGNOSIS ==========
@@ -506,7 +711,7 @@ with tab2:
         enhance_col1, enhance_col2 = st.columns([1, 2])
         
         with enhance_col1:
-            st.markdown("#### ⚙️ Core Parameters")
+            st.markdown("#### ⚙️ Core Parameters to Tune")
             lab_blend = st.slider("Global Blending", 0.0, 1.5, 0.0, 0.1, help="0.0 = Pure Enhanced, 1.0 = Pure Raw, >1.0 = Boosted Raw Contrast")
             lab_clip = st.slider("CLAHE Clip Limit", 1.0, 30.0, 15.0, 0.5)
             
@@ -521,15 +726,15 @@ with tab2:
             if not lab_scales:
                 st.warning("⚠️ **Frangi disabled**: Please select at least one scale to use Frangi filters.")
             
-            st.markdown("#### 🛠️ Advanced R&D")
+            st.markdown("#### 🛠️ Advanced R&D Settings")
             with st.expander("Fine-Tuning Parameters"):
                 lab_dog_small = st.slider("DoG Sigma Small", 0.1, 5.0, 1.0, 0.1)
                 lab_dog_large = st.slider("DoG Sigma Large", 1.0, 25.0, 4.0, 0.5)
                 lab_dirt_thresh = st.slider("Dirt Threshold", 0.01, 1.0, 0.1, 0.05, help="Lower = more aggressive cleaning of artifacts.")
-            
-            lab_image_file = st.file_uploader("Upload image for parameter testing", type=['tif', 'png', 'jpg'], key="lab_uploader")
         
         with enhance_col2:
+            lab_image_file = st.file_uploader("Upload image for parameter testing", type=['tif', 'png', 'jpg'], key="lab_uploader")
+            
             if lab_image_file:
                 lab_img = Image.open(lab_image_file)
                 lab_array = np.array(lab_img)
@@ -582,23 +787,27 @@ with tab2:
                                 if st.session_state.model is None:
                                     st.warning("⚠️ Load weights in Tab 1 first.")
                                 else:
-                                    with st.spinner("Analyzing both versions..."):
-                                        # 1. Mask from Raw
-                                        raw_rgb = cv2.cvtColor(lab_gray, cv2.COLOR_GRAY2RGB)
-                                        mask_raw = st.session_state.model.segment(raw_rgb)
-                                        overlay_raw = create_overlay(lab_gray, mask_raw)
-                                        
-                                        # 2. Mask from Enhanced
-                                        lab_input_rgb = cv2.cvtColor(lab_final, cv2.COLOR_GRAY2RGB)
-                                        mask_enh = st.session_state.model.segment(lab_input_rgb)
-                                        overlay_enh = create_overlay(lab_final, mask_enh)
-                                        
-                                        # Store in session state to persist through UI reruns
-                                        st.session_state.lab_results = {
-                                            "overlay_raw": overlay_raw,
-                                            "overlay_enh": overlay_enh,
-                                            "params_used": lab_preset.copy()
-                                        }
+                                    lab_progress = st.progress(0, text="Starting comparison analysis...")
+                                    
+                                    # 1. Mask from Raw
+                                    lab_progress.progress(10, text="🧠 Analyzing Raw image (1/2)...")
+                                    raw_rgb = cv2.cvtColor(lab_gray, cv2.COLOR_GRAY2RGB)
+                                    mask_raw = st.session_state.model.segment(raw_rgb)
+                                    overlay_raw = create_overlay(lab_gray, mask_raw)
+                                    
+                                    # 2. Mask from Enhanced
+                                    lab_progress.progress(50, text="🧠 Analyzing Enhanced image (2/2)...")
+                                    lab_input_rgb = cv2.cvtColor(lab_final, cv2.COLOR_GRAY2RGB)
+                                    mask_enh = st.session_state.model.segment(lab_input_rgb)
+                                    overlay_enh = create_overlay(lab_final, mask_enh)
+                                    
+                                    # Store in session state to persist through UI reruns
+                                    st.session_state.lab_results = {
+                                        "overlay_raw": overlay_raw,
+                                        "overlay_enh": overlay_enh,
+                                        "params_used": lab_preset.copy()
+                                    }
+                                    lab_progress.progress(100, text="✅ Comparison analysis complete!")
 
                         # Display results if they exist
                         if st.session_state.lab_results is not None:
@@ -627,8 +836,7 @@ with tab2:
                                 "📥 Download Enhanced PNG",
                                 data=lab_final_bytes,
                                 file_name="enhanced_experiment.png",
-                                mime="image/png",
-                                use_container_width=True
+                                mime="image/png"
                             )
                         with dl_lab2:
                             st.info("💡 Tip: Use these parameters to fix images where the base model fails.")
@@ -636,7 +844,7 @@ with tab2:
                     except Exception as e:
                         st.error(f"Processing error: {e}. Check your parameter ranges.")
             else:
-                st.info("💡 Upload an image in the sidebar or here to start fine-tuning.")
+                st.info("💡 Please upload an image for parameter testing above to start fine-tuning.")
 
 with tab3:
     st.markdown("### 🔬 Ask from AI")
