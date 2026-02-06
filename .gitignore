@@ -8,6 +8,8 @@ data/
 !examples/**/*.png
 !examples/**/*.jpg
 !app/static/**/*.png
+!assets/**/*.png
+!assets/**/*.jpg
 
 # --- Models & Runs ---
 models/sam_weights/*.pth
