@@ -102,40 +102,29 @@ python finetuning/train_sam.py --train_data "data/images" --mask_data "data/mask
 
 ```mermaid
 graph TD
-    %% Main Pipeline Flow
     subgraph "Input Phase"
-    direction TB
     A[Raw SEM Image] -->|Step 1| B[MatSAM Segmentation]
     end
 
     subgraph "Agentic Loop"
-    direction TB
     B --> C{"Quality Check<br/>(Coverage & Grain Count)"}
     
-    %% Success Path (Left Side)
+    %% Success Path
     C -->|Pass| D[Extract Statistics]
     
-    %% Failure Path (Right Side)
+    %% Failure Path
     C -->|Fail| E[Diagnostic Agent]
     E -->|Diagnose| F[LLM Consultant / RAG]
     F -->|Suggest| G[Rescue Workflow]
     G -->|Enhance| B
     end
 
-    %% Create invisible spacer to align Output Phase higher
-    E ~~~ SPACER1[ ]
-    
     subgraph "Output Phase"
-    direction TB
     D --> H[Grain Size Distribution]
     H --> I[Shape Factors]
     I --> J[Publication Plots]
     end
     
-    %% Align Output Phase with Diagnostic Agent level
-    SPACER1 ~~~ H
-    
-    %% Styles
     style E fill:#f9d5e5,stroke:#333,stroke-width:2px
     style F fill:#e1f5fe,stroke:#333,stroke-width:2px
     style G fill:#fff9c4,stroke:#333,stroke-width:2px
@@ -234,7 +223,7 @@ sem-agent-segmentation/
 
 **Author**: Ali Baghi Zadeh  
 📧 [alibaghizade@gmail.com](mailto:alibaghizade@gmail.com)  
-🔗 [LinkedIn](https://linkedin.com/in/baghizade)  
+🔗 [LinkedIn](https://www.linkedin.com/in/ali-baghi-zadeh-aa2a6250/)  
 💻 [GitHub Repository](https://github.com/AliBaghizadeh/sem-image--agent-segmentation)  
 🚀 [Live Demo](https://share.streamlit.io/alibaghizadeh/sem-image--agent-segmentation/main/app/app.py) *(Coming Soon)*
 
