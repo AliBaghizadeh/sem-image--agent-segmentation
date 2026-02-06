@@ -114,15 +114,18 @@ graph TD
     G -->|Enhance| B
     end
 
-    %% Invisible alignment helper
-    B -.-> H
+    %% Invisible vertical alignment helper (correct anchor)
+    D -.-> H
     linkStyle 6 opacity:0
 
     subgraph "Output Phase"
-    D --> H[Grain Size Distribution]
+    H[Grain Size Distribution]
     H --> I[Shape Factors]
     I --> J[Publication Plots]
     end
+
+    %% Real connection
+    D --> H
     
     style E fill:#f9d5e5,stroke:#333,stroke-width:2px
     style F fill:#e1f5fe,stroke:#333,stroke-width:2px
