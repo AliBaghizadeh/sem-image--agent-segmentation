@@ -98,7 +98,36 @@ python finetuning/train_sam.py --train_data "data/images" --mask_data "data/mask
 
 ## 🧪 Technical Methodology
 
-### 1. **Data Preparation**
+### 1. **Visual Workflow**
+
+```mermaid
+graph TD
+    subgraph "Input Phase"
+    A[Raw SEM Image] -->|Step 1| B[MatSAM Segmentation]
+    end
+
+    subgraph "Agentic Loop"
+    B --> C{Quality Check<br/>(Coverage & Grain Count)}
+    C -- "Pass (Good Quality)" --> D[Extract Statistics]
+    C -- "Fail (Poor Result)" --> E[Diagnostic Agent]
+    
+    E -->|Diagnose Issue| F[LLM Consultant / RAG]
+    F -->|Suggest Parameters| G[Rescue Workflow]
+    G -->|Enhance Image| B
+    end
+
+    subgraph "Output Phase"
+    D --> H[Grain Size Distribution]
+    D --> I[Shape Factors]
+    D --> J[Publication Plots]
+    end
+    
+    style E fill:#f9d5e5,stroke:#333,stroke-width:2px
+    style F fill:#e1f5fe,stroke:#333,stroke-width:2px
+    style G fill:#fff9c4,stroke:#333,stroke-width:2px
+```
+
+### 2. **Data Preparation**
 - Crop metadata bars from raw SEM images
 - Tile large images (1536×1113) into overlapping 1024×921 patches
 - Preserve grain structures without distortion
