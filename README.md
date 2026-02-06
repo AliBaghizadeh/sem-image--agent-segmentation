@@ -112,9 +112,6 @@ graph TD
     direction TB
     B --> C{"Quality Check<br/>(Coverage & Grain Count)"}
     
-    %% Success Path (Left Side)
-    C -->|Pass| D[Extract Statistics]
-    
     %% Failure Path (Right Side)
     C -->|Fail| E[Diagnostic Agent]
     E -->|Diagnose| F[LLM Consultant / RAG]
@@ -124,6 +121,8 @@ graph TD
 
     subgraph "Output Phase"
     direction TB
+    %% Success Path (Left Side)
+    C -->|Pass| D[Extract Statistics]
     D --> H[Grain Size Distribution]
     H --> I[Shape Factors]
     I --> J[Publication Plots]
