@@ -232,56 +232,60 @@ def load_model_ui():
     st.markdown("#### 1️⃣ Model Configuration")
     st.caption("Default path to MatSAM weight in model/")
     
-    # Store path in session state
+    # Define standard path
+    base_dir = Path(__file__).resolve().parent.parent
+    standard_weights = base_dir / "models/sam_weights/sam_vit_l_0b3195.pth"
+    
+    # Initialize session state path if not exists
     if 'current_model_path' not in st.session_state:
-        # Default to base SAM if available
-        default_path = Path(__file__).parent.parent / "models/sam_weights/sam_vit_l_0b3195.pth"
-        st.session_state.current_model_path = str(default_path) if default_path.exists() else ""
+        st.session_state.current_model_path = str(standard_weights) if standard_weights.exists() else ""
 
-    # Use vertical layout to prevent overlapping on zoom
+    # Synchronize button logic
     if st.button("📁 Browse Weights..."):
-        # Initialize hidden tkinter window
         try:
             root = tk.Tk()
             root.withdraw()
-            root.attributes('-topmost', True)  # Bring to front
-            
-            # Open dialog
+            root.attributes('-topmost', True)
             selected_path = filedialog.askopenfilename(
-                initialdir=str(Path(__file__).parent.parent),
+                initialdir=str(standard_weights.parent if standard_weights.exists() else base_dir),
                 title="Select MatSAM Weights (.pth)",
                 filetypes=(("Model Weights", "*.pth"), ("All files", "*.*"))
             )
             root.destroy()
             
             if selected_path:
+                # Update session state AND the specific key used for st.text_input to force UI sync
                 st.session_state.current_model_path = selected_path
+                st.session_state.path_input = selected_path  # This syncs with the text_input key
         except Exception as e:
             st.error(f"File picker error: {e}. Please enter path manually.")
 
+    # Use a specific key 'path_input' to allow session state to control the value
     user_path = st.text_input(
         "Current Weights Path:",
         value=st.session_state.current_model_path,
         key="path_input",
         help="Full path to the .pth weights file"
     )
+    
+    # Ensure current_model_path stays in sync if user types
     st.session_state.current_model_path = user_path
     
-    # Reload logic (cached for efficiency)
-    if user_path:
-        checkpoint_path = Path(user_path)
+    # Loading logic
+    if st.session_state.current_model_path:
+        checkpoint_path = Path(st.session_state.current_model_path)
         if checkpoint_path.exists():
+            # Check if we need to load or it's a new path
             if st.session_state.model is None or st.session_state.get('loaded_path') != str(checkpoint_path):
                 with st.spinner(f"Loading {checkpoint_path.name}..."):
                     try:
                         st.session_state.model = MatSAM(checkpoint=str(checkpoint_path))
                         st.session_state.loaded_path = str(checkpoint_path)
-                        st.session_state.current_model_path = str(checkpoint_path)
                         st.success("✅ Model Loaded Successfully")
                     except Exception as e:
                         st.error(f"❌ Error loading model: {e}")
         else:
-            if user_path != "":
+            if st.session_state.current_model_path != "":
                 st.warning("⚠️ File not found.")
     
     return st.session_state.model
@@ -301,13 +305,27 @@ def get_image_download_bytes(image_array, mode="RGB"):
 
 # Import Line Enhancer (if available)
 try:
-    line_enhancement_path = str(Path(__file__).parent.parent / "Line enhancement")
-    if line_enhancement_path not in sys.path:
-        sys.path.append(line_enhancement_path)
-    from sem_line_enhancer.pipeline import SEMPreprocessor
-    from sem_line_enhancer.presets import PREPROCESSOR_PRESETS, PIPELINE_PRESETS
-    HAS_ENHANCER = True
-except ImportError:
+    # Resolve absolute path to the 'Line enhancement' folder relative to this file
+    # This makes the app portable as long as the repo structure is maintained
+    repo_root = Path(__file__).resolve().parent.parent
+    line_enhancement_dir = repo_root / "Line enhancement"
+    
+    if line_enhancement_dir.exists():
+        if str(line_enhancement_dir) not in sys.path:
+            sys.path.append(str(line_enhancement_dir))
+            
+        from sem_line_enhancer.pipeline import SEMPreprocessor
+        from sem_line_enhancer.presets import PREPROCESSOR_PRESETS, PIPELINE_PRESETS
+        HAS_ENHANCER = True
+    else:
+        print(f"DEBUG: Line enhancement directory not found at {line_enhancement_dir}")
+        HAS_ENHANCER = False
+except ImportError as e:
+    print(f"DEBUG: Line enhancement import failed: {e}")
+    # This usually happens if dependencies like 'scikit-image' or 'joblib' are missing
+    HAS_ENHANCER = False
+except Exception as e:
+    print(f"DEBUG: Unexpected error loading enhancement module: {e}")
     HAS_ENHANCER = False
 
 def process_image(image, model, enhance=True, use_global=False):
