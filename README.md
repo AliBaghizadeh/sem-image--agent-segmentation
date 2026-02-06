@@ -153,10 +153,10 @@ The system analyzes segmentation quality using:
 - Coverage percentage (expected: 60-85%)
 - Boundary smoothness (jaggedness score)
 
-If quality is poor, the agent:
+If quality is poor, the agent (in the **Streamlit app**):
 1. Diagnoses the failure type (e.g., "under-segmentation", "high noise")
-2. Suggests optimal preprocessing parameters (Frangi, DoG, Blend)
-3. Directs the user to the "Rescue Workflow" for recovery
+2. Displays suggested preprocessing parameters (Frangi scales, DoG sigma, Blend ratio) in the UI
+3. Directs the user to apply the "Rescue Workflow" with recommended settings
 
 ---
 
@@ -173,7 +173,7 @@ The pipeline automatically generates publication-quality microstructural distrib
 | **Boundary Precision** | 0.81 | 0.93 | +15% |
 | **Processing Time** | 45s/image | 12s/image | 3.75× faster |
 
-*Tested on 200 held-out SEM images from Ni-based superalloys*
+*Tested on 200 held-out SEM images from Metal-based alloys*
 
 ---
 
