@@ -2,7 +2,6 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Streamlit App](https://img.shields.io/badge/Streamlit-App-FF4B4B)](https://share.streamlit.io/alibaghizadeh/sem-image--agent-segmentation/main/app/app.py)
 
 > **Automated grain boundary detection in SEM images using fine-tuned [MatSAM](https://arxiv.org/abs/2401.05638) with intelligent failure diagnosis**
 
@@ -240,7 +239,6 @@ sem-agent-segmentation/
 📧 [alibaghizade@gmail.com](mailto:alibaghizade@gmail.com)  
 🔗 [LinkedIn](https://www.linkedin.com/in/ali-baghi-zadeh-aa2a6250/)  
 💻 [GitHub Repository](https://github.com/AliBaghizadeh/sem-image--agent-segmentation)  
-🚀 [Live Demo](https://share.streamlit.io/alibaghizadeh/sem-image--agent-segmentation/main/app/app.py) *(Coming Soon)*
 
 **Contributions welcome!** Open an issue or submit a pull request.
 
